@@ -23,6 +23,7 @@ void() player_run;
 void(entity bomb, entity attacker, float rad, entity ignore) T_RadiusDamage;
 void(vector org, vector vel, float damage) SpawnBlood;
 void() SuperDamageSound;
+void() PlayerDie;
 
 
 // called by worldspawn
@@ -40,6 +41,21 @@ void() W_Precache =
 	precache_sound("weapons/grenade.wav"); // grenade launcher
 	precache_sound("weapons/bounce.wav"); // grenade bounce
 	precache_sound("weapons/shotgn2.wav"); // super shotgun
+	// added ap powerup sounds for compatability
+	precache_sound("items/damage.wav");
+	precache_sound("items/damage2.wav");
+	precache_sound("items/damage3.wav");
+	precache_sound("items/suit.wav");
+	precache_sound("items/suit2.wav");
+	precache_sound("items/protect.wav");
+	precache_sound("items/protect2.wav");
+	precache_sound("items/protect3.wav");
+	precache_sound("items/inv1.wav");
+	precache_sound("items/inv2.wav");
+	precache_sound("items/inv3.wav");
+	precache_sound("weapons/lock4.wav");
+	precache_sound("items/r_item1.wav");
+	precache_sound("items/armor1.wav");
 };
 
 float() crandom =
@@ -1231,6 +1247,199 @@ void() QuadCheat =
 	dprint("quad cheat\n");
 };
 
+// AP Helper functions
+void() APDie =
+{
+	if (self.classname != "player")
+		return;
+	self.items = self.items - (self.items & IT_INVULNERABILITY);
+	PlayerDie();
+}
+
+// AP inventory powerup functions
+void() APQuad =
+{
+	if (self.classname != "player")
+		return;
+	if (self.health <= 0)
+		return;
+	if (self.quad_uses == 0)
+		return;
+	sound (self, CHAN_VOICE, "items/damage.wav", 1, ATTN_NORM);
+	stuffcmd (self, "bf\n");
+	self.super_time = 1;
+	self.super_damage_finished = time + 30;
+	self.items = self.items | IT_QUAD;
+	self.quad_uses -= 1;
+};
+
+void() APBio =
+{
+	if (self.classname != "player")
+		return;
+	if (self.health <= 0)
+		return;
+	if (self.bio_uses == 0)
+		return;
+	sound (self, CHAN_VOICE, "items/suit.wav", 1, ATTN_NORM);
+	stuffcmd (self, "bf\n");
+	self.rad_time = 1;
+	self.radsuit_finished = time + 30;
+	self.items = self.items | IT_SUIT;
+	self.bio_uses -= 1;
+};
+
+void() APInvuln =
+{
+	if (self.classname != "player")
+		return;
+	if (self.health <= 0)
+		return;
+	if (self.invuln_uses == 0)
+		return;
+	sound (self, CHAN_VOICE, "items/protect.wav", 1, ATTN_NORM);
+	stuffcmd (self, "bf\n");
+	self.invincible_time = 1;
+	self.invincible_finished = time + 30;
+	self.items = self.items | IT_INVULNERABILITY;
+	self.invuln_uses -= 1;
+};
+
+void() APInvis =
+{
+	if (self.classname != "player")
+		return;
+	if (self.health <= 0)
+		return;
+	if (self.invis_uses == 0)
+		return;
+	sound (self, CHAN_VOICE, "items/inv1.wav", 1, ATTN_NORM);
+	stuffcmd (self, "bf\n");
+	self.invisible_time = 1;
+	self.invisible_finished = time + 30;
+	self.items = self.items | IT_INVISIBILITY;
+	self.invis_uses -= 1;
+};
+
+void() APBackpack =
+{
+	if (self.classname != "player")
+		return;
+	if (self.health <= 0)
+		return;
+	if (self.backpack_uses == 0)
+		return;
+	sound(self, CHAN_ITEM, "weapons/lock4.wav", 1, ATTN_NORM);
+	stuffcmd(self, "bf\n");
+	self.ammo_nails += 30;
+	self.ammo_shells += 5;
+	self.ammo_rockets += 5;
+	self.ammo_cells += 15;
+	if (self.ammo_shells > 100)
+		self.ammo_shells = 100;
+	if (self.ammo_nails > 200)
+		self.ammo_nails = 200;
+	if (self.ammo_rockets > 100)
+		self.ammo_rockets = 100;
+	if (self.ammo_cells > 100)
+		self.ammo_cells = 100;
+	W_SetCurrentAmmo();
+	self.backpack_uses -= 1;
+};
+
+void () player_health_rot =
+{
+	if (self.classname != "player")
+		return;
+	if (self.health > 100)
+	{
+		self.health -= 1;
+		self.nextthink = time + 1;
+		return;
+	}	
+	self.items = self.items - (self.items & IT_SUPERHEALTH);
+}
+
+void() APMedkit =
+{
+	if (self.classname != "player")
+		return;
+	if (self.health <= 0 || self.health >= 200)
+		return;
+	if (self.medkit_uses == 0)
+		return;
+	
+	if (self.medkit_uses >= 25)
+	{		
+		self.health += 25;
+		self.medkit_uses -= 25;
+	}
+	else
+	{
+		self.health += self.medkit_uses;
+		self.medkit_uses = 0;
+	}
+	
+	if (self.health > 200)
+	{
+		self.medkit_uses += (self.health-200);
+		self.health = 200;
+	}
+	if (self.health > 100)
+	{
+		self.items = self.items | IT_SUPERHEALTH;
+		self.nextthink = time + 5;
+		self.think = player_health_rot;
+	}
+	
+	sound(self, CHAN_ITEM, "items/r_item1.wav", 1, ATTN_NORM);
+	stuffcmd (self, "bf\n");
+};
+
+void() APArmor =
+{
+	if (self.classname != "player")
+		return;
+	if (self.health <= 0 || self.armorvalue >= 200)
+		return;
+	if (self.armor_uses == 0)
+		return;
+	if (self.armor_uses >= 25)
+	{
+		self.armorvalue += 25;
+		self.armor_uses -= 25;
+	}
+	else
+	{
+		self.armorvalue += self.armor_uses;
+		self.armor_uses = 0;
+	}
+	
+	if (self.armorvalue > 200)
+	{
+		self.armor_uses += (self.armorvalue-200);
+		self.armorvalue = 200;
+	}
+	
+	if (self.armorvalue > 0 && self.armorvalue <= 100)
+	{
+		self.armortype = 0.3;
+		self.items = self.items - (self.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + IT_ARMOR1;
+	}
+	if (self.armorvalue > 100 && self.armorvalue <= 150)
+	{
+		self.armortype = 0.6;
+		self.items = self.items - (self.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + IT_ARMOR2;
+	}
+	if (self.armorvalue > 150)
+	{
+		self.armortype = 0.8;
+		self.items = self.items - (self.items & (IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + IT_ARMOR3;
+	}
+	sound(self, CHAN_ITEM, "items/armor1.wav", 1, ATTN_NORM);
+	stuffcmd (self, "bf\n");
+};
+
 /*
 ============
 ImpulseCommands
@@ -1250,9 +1459,25 @@ void() ImpulseCommands =
 		ServerflagsCommand();
 	if (self.impulse == 12)
 		CycleWeaponBack();
-
 	if (self.impulse == 255)
 		QuadCheat();
+	//added for AP
+	if (self.impulse == 200)
+		APQuad();
+	if (self.impulse == 201)
+		APInvuln();
+	if (self.impulse == 202)
+		APBio();
+	if (self.impulse == 203)
+		APInvis();
+	if (self.impulse == 204)
+		APBackpack();
+	if (self.impulse == 205)
+		APMedkit();
+	if (self.impulse == 206)
+		APArmor();
+	if (self.impulse == 220)
+		APDie();
 
 	self.impulse = 0;
 };

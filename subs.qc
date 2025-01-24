@@ -258,7 +258,15 @@ void() SUB_UseTargets =
 		if (!self.noise)
 			sound(activator, CHAN_VOICE, "misc/talk.wav", 1, ATTN_NORM);
 	}
-
+	if (self.classname == "trigger_secret")
+	{
+		// [ap] transfer secret data for use in C
+		dprint("Secret triggered\n");
+		entity player_ent;
+		player_ent = find(world, classname, "player");
+		player_ent.secret_coords = self.absmax;
+		player_ent.new_secret = 1.0;
+	}
 //
 // kill the killtagets
 //

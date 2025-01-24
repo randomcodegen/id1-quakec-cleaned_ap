@@ -230,7 +230,6 @@ void() trigger_secret =
 		precache_sound("misc/talk.wav");
 		self.noise = "misc/talk.wav";
 	}
-
 	trigger_multiple();
 };
 

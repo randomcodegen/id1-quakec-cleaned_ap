@@ -328,6 +328,13 @@ float IT_INVULNERABILITY = 1048576;
 float IT_SUIT = 2097152;
 float IT_QUAD = 4194304;
 
+// AP Items
+float AP_GRENADESAVER = 1;
+float AP_ROCKETSAVER = 2;
+float AP_GRENADEJUMP = 4;
+float AP_ROCKETJUMP = 8;
+float AP_SHOOTSWITCH = 16;
+
 // point content values
 
 float CONTENT_EMPTY = -1;
@@ -502,6 +509,31 @@ float AS_MISSILE = 4;
 .string deathtype; // keeps track of how the player died
 
 //
+// AP Items stored in bitflag
+//
+
+.float ap_items;
+
+//
+// AP Consumables
+//
+
+.float quad_uses;
+.float invuln_uses;
+.float bio_uses;
+.float invis_uses;
+.float backpack_uses;
+.float medkit_uses;
+.float armor_uses;
+
+//
+// AP Store Secret Trigger Data
+//
+
+.vector secret_coords;
+.float new_secret;
+
+//
 // object stuff
 //
 .string mdl;
@@ -565,9 +597,6 @@ float AS_MISSILE = 4;
 .float waitmin, waitmax;
 .float distance;
 .float volume;
-
-
-
 
 //===========================================================================
 

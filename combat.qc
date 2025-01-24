@@ -126,7 +126,12 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 
 	if (!targ.takedamage)
 		return;
-
+	// [ap] Disable shooting doors/buttons
+	if (!(attacker.ap_items & AP_SHOOTSWITCH) && (targ.classname == "func_button" || targ.classname == "door" || targ.classname == "trigger_multiple" || targ.classname == "trigger_once"))
+	{
+		return;
+	}
+	//sprint(attacker, targ.classname);
 // used by buttons and triggers to set activator for target firing
 	damage_attacker = attacker;
 
@@ -146,6 +151,7 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 
 	targ.armorvalue = targ.armorvalue - save;
 	take = ceil(damage-save);
+	
 
 // add to the damage total for clients, which will be sent as a single
 // message at the end of the frame
@@ -163,11 +169,31 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 		dir = targ.origin - (inflictor.absmin + inflictor.absmax) * 0.5;
 		dir = normalize(dir);
 		targ.velocity = targ.velocity + dir*damage*8;
+		if (targ.classname == "player")
+		{
+			//ap TODO: maybe add an extra check so ogre grenades still boost the player
+			//sprint(targ, inflictor.model);
+			if ((inflictor.model == "progs/grenade.mdl") && !(targ.ap_items & AP_GRENADEJUMP)) 
+				targ.velocity = '0 0 0';
+			if ((inflictor.model == "progs/missile.mdl") && !(targ.ap_items & AP_ROCKETJUMP)) 
+				targ.velocity = '0 0 0';
+		}
 	}
 
 // check for godmode or invincibility
 	if (targ.flags & FL_GODMODE)
 		return;
+	if (targ.classname == "player" && (inflictor.owner.classname == "player"))
+	{
+		if ((inflictor.model == "progs/grenade.mdl")  && (targ.ap_items & AP_GRENADESAVER))
+		{
+			return;
+		}
+		if ((inflictor.model == "progs/missile.mdl")  && (targ.ap_items & AP_ROCKETSAVER))
+		{
+			return;
+		}
+	}
 	if (targ.invincible_finished >= time)
 	{
 		if (self.invincible_sound < time)

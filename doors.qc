@@ -584,7 +584,7 @@ void() fd_secret_use =
 	float temp;
 
 	self.health = 10000;
-
+	
 	// exit if still moving around...
 	if (self.origin != self.oldorigin)
 		return;
