@@ -60,6 +60,7 @@ void() PlaceItem =
 	self.velocity = '0 0 0';
 	self.origin_z = self.origin_z + 6;
 	oldz = self.origin_z;
+	/*
 	if (!droptofloor())
 	{
 		dprint("Bonus item fell out of level at ");
@@ -67,6 +68,16 @@ void() PlaceItem =
 		dprint("\n");
 		remove(self);
 		return;
+	}
+	*/
+	// AP fix items falling OOB
+	if (!droptofloor())
+	{
+		dprint("Bonus item fell out of level at ");
+		dprint(vtos(self.origin));
+		dprint(self.classname);
+		setorigin(self, self.origin);
+		self.solid = SOLID_TRIGGER;
 	}
 };
 
