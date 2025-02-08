@@ -83,6 +83,11 @@ void(entity targ, entity attacker) Killed =
 
 	if (self.movetype == MOVETYPE_PUSH || self.movetype == MOVETYPE_NONE)
 	{ // doors, triggers, etc
+		//  [ap]player ent required
+		entity player_ent;
+		player_ent = find(world, classname, "player");
+		// repurpose used_button for shootswitches as well
+		player_ent.used_button = 1;
 		self.th_die();
 		self = oself;
 		return;

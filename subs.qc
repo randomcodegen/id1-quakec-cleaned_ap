@@ -307,8 +307,6 @@ void() SUB_UseTargets =
 			dprint(self.classname);
 			if (self.classname == "func_button")
 				player_ent.used_button = 1;
-			else
-				player_ent.used_button = 0;
 			// items/weapons should maybe act like buttons being triggered
 			//if (self.flags&FL_ITEM)
 			//	was_button = 1;
