@@ -27,7 +27,6 @@ void() button_wait =
 	self.nextthink = self.ltime + self.wait;
 	self.think = button_return;
 	activator = self.enemy;
-	dprint("Button wait\n");
 	SUB_UseTargets();
 	self.frame = 1; // use alternate textures
 };
