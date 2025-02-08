@@ -126,7 +126,16 @@ void() door_fire =
 
 	if (self.owner != self)
 		objerror("door_fire: self.owner != self");
-
+	
+	//  [ap]player ent required
+	entity player_ent;
+	player_ent = find(world, classname, "player");
+	if (player_ent.can_door == 0 && !player_ent.used_button)
+	{
+		dprint("Door_Fire blocked\n");
+		return;
+	}
+	
 	// play use key sound
 	if (self.items)
 		sound(self, CHAN_VOICE, self.noise4, 1, ATTN_NORM);
@@ -222,13 +231,7 @@ void() door_touch =
 {
 	if (other.classname != "player")
 		return;
-	// [ap] block door
-	if (other.can_door == 0)
-	{
-		dprint("Door_Touch blocked\n");
-		return;
-	}
-	
+		
 	if (self.owner.attack_finished > time)
 		return;
 
@@ -285,11 +288,19 @@ void() door_touch =
 		}
 		return;
 	}
+	
+	// [ap] block door
+	if (other.can_door == 0)
+	{
+		dprint("Door_Touch blocked\n");
+		return;
+	}
 
 	other.items = other.items - self.items;
 	self.touch = SUB_Null;
 	if (self.enemy)
 		self.enemy.touch = SUB_Null; // get paired door
+	
 	door_use();
 };
 
