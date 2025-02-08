@@ -74,6 +74,9 @@ void() button_touch =
 {
 	if (other.classname != "player")
 		return;
+	// [ap] disable player touching buttons
+	if (other.can_button != 1)
+		return;
 	self.enemy = other;
 	button_fire();
 };

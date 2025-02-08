@@ -230,6 +230,10 @@ match(string)self.target and call their .use function
 void() SUB_UseTargets =
 {
 	entity t, stemp, otemp, act;
+	
+	//  [ap]player ent required
+	entity player_ent;
+	player_ent = find(world, classname, "player");
 
 //
 // check for a delay
@@ -262,8 +266,6 @@ void() SUB_UseTargets =
 	{
 		// [ap] transfer secret data for use in C
 		dprint("Secret triggered\n");
-		entity player_ent;
-		player_ent = find(world, classname, "player");
 		player_ent.secret_coords = self.absmax;
 		player_ent.new_secret = 1.0;
 	}
@@ -287,6 +289,7 @@ void() SUB_UseTargets =
 //
 	if (self.target)
 	{
+		
 		act = activator;
 		t = world;
 		do
@@ -296,20 +299,44 @@ void() SUB_UseTargets =
 			{
 				return;
 			}
+			// [AP] block door targets
+			dprint("Activator: ");
+			dprint(activator.classname);
+			dprint("\n");
+			dprint("Self Class: ");
+			dprint(self.classname);
+			if (self.classname == "func_button")
+				player_ent.used_button = 1;
+			else
+				player_ent.used_button = 0;
+			// items/weapons should maybe act like buttons being triggered
+			//if (self.flags&FL_ITEM)
+			//	was_button = 1;
+			dprint("\n");
+			dprint("Targetname: ");
+			dprint(t.classname);
+			dprint("\n");
 			stemp = self;
 			otemp = other;
 			self = t;
 			other = stemp;
 			if (self.use != SUB_Null)
 			{
-				if (self.use)
+				if (player_ent.can_door == 0 && t.classname == "door" && !player_ent.used_button)
+				{
+					dprint("Door Blocked!\n");
+				}
+				else if (self.use)
+				{
 					self.use();
+				}
 			}
 			self = stemp;
 			other = otemp;
 			activator = act;
 		} while (1);
 	}
+	player_ent.used_button = 0;
 
 
 };

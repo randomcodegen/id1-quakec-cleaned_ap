@@ -509,31 +509,6 @@ float AS_MISSILE = 4;
 .string deathtype; // keeps track of how the player died
 
 //
-// AP Items stored in bitflag
-//
-
-.float ap_items;
-
-//
-// AP Consumables
-//
-
-.float quad_uses;
-.float invuln_uses;
-.float bio_uses;
-.float invis_uses;
-.float backpack_uses;
-.float medkit_uses;
-.float armor_uses;
-
-//
-// AP Store Secret Trigger Data
-//
-
-.vector secret_coords;
-.float new_secret;
-
-//
 // object stuff
 //
 .string mdl;
@@ -738,3 +713,30 @@ float(entity e, float healamount, float ignore) T_Heal; // health function
 float(entity targ, entity inflictor) CanDamage;
 
 
+//
+// AP Items stored in bitflag
+//
+
+.float ap_items;
+
+//
+// AP Consumables
+//
+
+.float quad_uses;
+.float invuln_uses;
+.float bio_uses;
+.float invis_uses;
+.float backpack_uses;
+.float medkit_uses;
+.float armor_uses;
+.float can_door;
+.float can_button;
+.float used_button;
+
+//
+// AP Store Secret Trigger Data
+//
+
+.vector secret_coords;
+.float new_secret;

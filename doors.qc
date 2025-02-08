@@ -163,7 +163,15 @@ void() door_fire =
 void() door_use =
 {
 	entity oself;
-
+	
+	//  [ap]player ent required
+	entity player_ent;
+	player_ent = find(world, classname, "player");
+	if (player_ent.can_door == 0 && !player_ent.used_button)
+	{
+		dprint("Door_Use blocked\n");
+		return;
+	}
 	self.message = ""; // door message are for touch only
 	self.owner.message = "";
 	self.enemy.message = "";
@@ -214,6 +222,13 @@ void() door_touch =
 {
 	if (other.classname != "player")
 		return;
+	// [ap] block door
+	if (other.can_door == 0)
+	{
+		dprint("Door_Touch blocked\n");
+		return;
+	}
+	
 	if (self.owner.attack_finished > time)
 		return;
 
