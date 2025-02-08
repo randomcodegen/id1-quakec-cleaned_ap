@@ -81,6 +81,10 @@ void() multi_trigger =
 		self.touch = SUB_Null;
 		self.nextthink = time + 0.1;
 		self.think = SUB_Remove;
+		//  [ap]player ent required
+		entity player_ent;
+		player_ent = find(world, classname, "player");
+		player_ent.used_button = 0;
 	}
 };
 

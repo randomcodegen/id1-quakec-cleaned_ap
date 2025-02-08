@@ -27,7 +27,11 @@ void() button_wait =
 	self.nextthink = self.ltime + self.wait;
 	self.think = button_return;
 	activator = self.enemy;
+	entity player_ent;
+	player_ent = find(world, classname, "player");
+	player_ent.used_button = 1;
 	SUB_UseTargets();
+	player_ent.used_button = 0;
 	self.frame = 1; // use alternate textures
 };
 

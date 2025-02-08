@@ -305,15 +305,11 @@ void() SUB_UseTargets =
 			dprint("\n");
 			dprint("Self Class: ");
 			dprint(self.classname);
-			if (self.classname == "func_button")
-				player_ent.used_button = 1;
 			// items/weapons should maybe act like buttons being triggered
 			//if (self.flags&FL_ITEM)
 			//	was_button = 1;
 			
 			// exception for trigger_counter since this is usually a shootswitch
-			if (self.classname == "trigger_counter")
-				player_ent.used_button = 1;
 			dprint("\n");
 			dprint("Targetname: ");
 			dprint(t.classname);
@@ -338,9 +334,6 @@ void() SUB_UseTargets =
 			activator = act;
 		} while (1);
 	}
-	player_ent.used_button = 0;
-
-
 };
 
 
