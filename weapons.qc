@@ -1462,21 +1462,21 @@ void() ImpulseCommands =
 	if (self.impulse == 255)
 		QuadCheat();
 	//added for AP
-	if (self.impulse == 200)
+	if (self.impulse == 230)
 		APQuad();
-	if (self.impulse == 201)
+	if (self.impulse == 231)
 		APInvuln();
-	if (self.impulse == 202)
+	if (self.impulse == 232)
 		APBio();
-	if (self.impulse == 203)
+	if (self.impulse == 233)
 		APInvis();
-	if (self.impulse == 204)
+	if (self.impulse == 234)
 		APBackpack();
-	if (self.impulse == 205)
+	if (self.impulse == 235)
 		APMedkit();
-	if (self.impulse == 206)
+	if (self.impulse == 236)
 		APArmor();
-	if (self.impulse == 220)
+	if (self.impulse == 237)
 		APDie();
 
 	self.impulse = 0;

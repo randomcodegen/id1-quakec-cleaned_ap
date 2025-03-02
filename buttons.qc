@@ -79,8 +79,14 @@ void() button_touch =
 	if (other.classname != "player")
 		return;
 	// [ap] disable player touching buttons
-	if (other.can_button != 1)
+	if (other.can_button != 1) {
+		if (other.ap_print_button_blocked && other.ap_last_message_time+5 < time)
+		{
+			sprint(other, "Button blocked!\n");
+			other.ap_last_message_time = time;
+		}
 		return;
+	}
 	self.enemy = other;
 	button_fire();
 };

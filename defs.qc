@@ -740,3 +740,11 @@ float(entity targ, entity inflictor) CanDamage;
 
 .vector secret_coords;
 .float new_secret;
+
+//
+// AP Print Helpers
+//
+
+.float ap_print_door_blocked;
+.float ap_print_button_blocked;
+.float ap_last_message_time;

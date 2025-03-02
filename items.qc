@@ -76,6 +76,7 @@ void() PlaceItem =
 		dprint("Bonus item fell out of level at ");
 		dprint(vtos(self.origin));
 		dprint(self.classname);
+		dprint("\n");
 		setorigin(self, self.origin);
 		self.solid = SOLID_TRIGGER;
 	}
