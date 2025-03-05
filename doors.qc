@@ -133,7 +133,7 @@ void() door_fire =
 	if (player_ent.can_door == 0 && !player_ent.used_button)
 	{
 		dprint("Door_Fire blocked\n");
-		if (player_ent.ap_print_door_blocked && player_ent.ap_last_message_time+5 < time)
+		if (player_ent.ap_print_door_blocked && player_ent.ap_last_message_time+2 < time)
 		{
 			sprint(player_ent, "Door blocked!\n");
 			player_ent.ap_last_message_time = time;
@@ -184,7 +184,7 @@ void() door_use =
 	if (player_ent.can_door == 0 && !player_ent.used_button)
 	{
 		dprint("Door_Use blocked\n");
-		if (player_ent.ap_print_door_blocked && player_ent.ap_last_message_time+5 < time)
+		if (player_ent.ap_print_door_blocked && player_ent.ap_last_message_time+2 < time)
 		{
 			sprint(player_ent, "Door blocked!\n");
 			player_ent.ap_last_message_time = time;
@@ -303,7 +303,7 @@ void() door_touch =
 	if (other.can_door == 0)
 	{
 		dprint("Door_Touch blocked\n");
-		if (other.ap_print_door_blocked && other.ap_last_message_time+5 < time)
+		if (other.ap_print_door_blocked && other.ap_last_message_time+2 < time)
 		{
 			sprint(other, "Door blocked!\n");
 			other.ap_last_message_time = time;

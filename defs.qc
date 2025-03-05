@@ -730,9 +730,29 @@ float(entity targ, entity inflictor) CanDamage;
 .float backpack_uses;
 .float medkit_uses;
 .float armor_uses;
+
+.float ap_heal_amount;
+.float ap_armor_amount;
+
+//
+// AP Abilities
+//
 .float can_door;
 .float can_button;
 .float used_button;
+
+//
+// AP Ammo Synchronization
+//
+
+.float ap_shells;
+.float ap_nails;
+.float ap_rockets;
+.float ap_cells;
+.float ap_max_shells;
+.float ap_max_nails;
+.float ap_max_rockets;
+.float ap_max_cells;
 
 //
 // AP Store Secret Trigger Data

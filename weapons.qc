@@ -1331,20 +1331,47 @@ void() APBackpack =
 		return;
 	sound(self, CHAN_ITEM, "weapons/lock4.wav", 1, ATTN_NORM);
 	stuffcmd(self, "bf\n");
-	self.ammo_nails += 30;
 	self.ammo_shells += 5;
+	self.ammo_nails += 30;
 	self.ammo_rockets += 5;
 	self.ammo_cells += 15;
-	if (self.ammo_shells > 100)
-		self.ammo_shells = 100;
-	if (self.ammo_nails > 200)
-		self.ammo_nails = 200;
-	if (self.ammo_rockets > 100)
-		self.ammo_rockets = 100;
-	if (self.ammo_cells > 100)
-		self.ammo_cells = 100;
+	if (self.ammo_shells > self.ap_max_shells)
+		self.ammo_shells = self.ap_max_shells;
+	if (self.ammo_nails > self.ap_max_nails)
+		self.ammo_nails = self.ap_max_nails;
+	if (self.ammo_rockets > self.ap_max_rockets)
+		self.ammo_rockets = self.ap_max_rockets;
+	if (self.ammo_cells > self.ap_max_cells)
+		self.ammo_cells = self.ap_max_cells;
 	W_SetCurrentAmmo();
 	self.backpack_uses -= 1;
+};
+
+void() APSetAmmo =
+{
+	if (self.classname != "player")
+		return;
+	if (self.health <= 0)
+		return;
+	// give ammo
+	self.ammo_shells += self.ap_shells;
+	self.ap_shells = 0;
+	self.ammo_nails += self.ap_nails;
+	self.ap_nails = 0;
+	self.ammo_rockets += self.ap_rockets;
+	self.ap_rockets = 0;
+	self.ammo_cells += self.ap_cells;
+	self.ap_cells = 0;
+	// clamp ammo
+	if (self.ammo_shells > self.ap_max_shells)
+		self.ammo_shells = self.ap_max_shells;
+	if (self.ammo_nails > self.ap_max_nails)
+		self.ammo_nails = self.ap_max_nails;
+	if (self.ammo_rockets > self.ap_max_rockets)
+		self.ammo_rockets = self.ap_max_rockets;
+	if (self.ammo_cells > self.ap_max_cells)
+		self.ammo_cells = self.ap_max_cells;
+	W_SetCurrentAmmo();
 };
 
 void () player_health_rot =
@@ -1369,10 +1396,10 @@ void() APMedkit =
 	if (self.medkit_uses == 0)
 		return;
 	
-	if (self.medkit_uses >= 25)
+	if (self.medkit_uses >= self.ap_heal_amount)
 	{		
-		self.health += 25;
-		self.medkit_uses -= 25;
+		self.health += self.ap_heal_amount;
+		self.medkit_uses -= self.ap_heal_amount;
 	}
 	else
 	{
@@ -1394,6 +1421,7 @@ void() APMedkit =
 	
 	sound(self, CHAN_ITEM, "items/r_item1.wav", 1, ATTN_NORM);
 	stuffcmd (self, "bf\n");
+	self.ap_heal_amount = 25;
 };
 
 void() APArmor =
@@ -1404,10 +1432,10 @@ void() APArmor =
 		return;
 	if (self.armor_uses == 0)
 		return;
-	if (self.armor_uses >= 25)
+	if (self.armor_uses >= self.ap_armor_amount)
 	{
-		self.armorvalue += 25;
-		self.armor_uses -= 25;
+		self.armorvalue += self.ap_armor_amount;
+		self.armor_uses -= self.ap_armor_amount;
 	}
 	else
 	{
@@ -1438,6 +1466,7 @@ void() APArmor =
 	}
 	sound(self, CHAN_ITEM, "items/armor1.wav", 1, ATTN_NORM);
 	stuffcmd (self, "bf\n");
+	self.ap_armor_amount = 25;
 };
 
 /*
@@ -1478,6 +1507,8 @@ void() ImpulseCommands =
 		APArmor();
 	if (self.impulse == 237)
 		APDie();
+	if (self.impulse == 238)
+		APSetAmmo();
 
 	self.impulse = 0;
 };

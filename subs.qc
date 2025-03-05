@@ -323,7 +323,7 @@ void() SUB_UseTargets =
 				if (player_ent.can_door == 0 && t.classname == "door" && !player_ent.used_button)
 				{
 					dprint("Door Blocked!\n");
-					if (player_ent.ap_print_door_blocked && player_ent.ap_last_message_time+5 < time)
+					if (player_ent.ap_print_door_blocked && player_ent.ap_last_message_time+2 < time)
 					{
 						sprint(player_ent, "Door blocked!\n");
 						player_ent.ap_last_message_time = time;
