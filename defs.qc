@@ -754,6 +754,9 @@ float(entity targ, entity inflictor) CanDamage;
 .float ap_max_rockets;
 .float ap_max_cells;
 
+.float ap_health_rot;
+.float ap_last_health_rot;
+
 //
 // AP Store Secret Trigger Data
 //

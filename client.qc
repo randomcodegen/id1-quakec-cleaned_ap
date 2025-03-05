@@ -877,6 +877,16 @@ void() PlayerPreThink =
 // teleporters can force a non-moving pause time
 	if (time < self.pausetime)
 		self.velocity = '0 0 0';
+
+	if (self.health > 100)
+		self.ap_health_rot = 1;
+	if (self.ap_health_rot && (self.ap_last_health_rot + 1 < time))
+	{
+		self.health -= 1;
+		self.ap_last_health_rot = time;
+	}
+	else 
+		self.ap_health_rot = 0;
 };
 
 /*
