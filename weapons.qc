@@ -1331,10 +1331,10 @@ void() APBackpack =
 		return;
 	sound(self, CHAN_ITEM, "weapons/lock4.wav", 1, ATTN_NORM);
 	stuffcmd(self, "bf\n");
-	self.ammo_shells += 5;
-	self.ammo_nails += 30;
-	self.ammo_rockets += 5;
-	self.ammo_cells += 15;
+	self.ammo_shells += 40;
+	self.ammo_nails += 50;
+	self.ammo_rockets += 15;
+	self.ammo_cells += 50;
 	if (self.ammo_shells > self.ap_max_shells)
 		self.ammo_shells = self.ap_max_shells;
 	if (self.ammo_nails > self.ap_max_nails)
