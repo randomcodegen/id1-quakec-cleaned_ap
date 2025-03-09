@@ -1333,7 +1333,7 @@ void() APBackpack =
 	stuffcmd(self, "bf\n");
 	self.ammo_shells += 40;
 	self.ammo_nails += 50;
-	self.ammo_rockets += 15;
+	self.ammo_rockets += 25;
 	self.ammo_cells += 50;
 	if (self.ammo_shells > self.ap_max_shells)
 		self.ammo_shells = self.ap_max_shells;
