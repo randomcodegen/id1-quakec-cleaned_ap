@@ -77,6 +77,7 @@ void() PlaceItem =
 		dprint(vtos(self.origin));
 		dprint(self.classname);
 		dprint("\n");
+		self.origin_z = self.origin_z - 6;
 		setorigin(self, self.origin);
 		self.solid = SOLID_TRIGGER;
 	}
@@ -1372,6 +1373,8 @@ void ()ap_touch =
 		return;
 	if (other.health <= 0)
 		return;
+	if (self.model == string_null)
+		return;
 	/*
 	entity stemp;
 	stemp = self;
@@ -1404,7 +1407,9 @@ void ()ap_touch =
 
 	activator = other;
 	SUB_UseTargets(); // fire all targets / killtargets
-	remove(self);
+	
+	// Don't remove self to enable respawning the item
+	//remove(self);
 };
 
 void() item_ap =
@@ -1424,6 +1429,17 @@ void() item_ap_prog =
 	setmodel(self, "progs/ap-logo-prog.mdl");
 	self.weapon = TRUE;
 	self.netname = "AP Item Prog";
+	self.touch = ap_touch;
+	setsize(self, '-16 -16 0', '16 16 32');
+	StartItem();
+};
+
+void() item_ap_white =
+{
+	precache_model("progs/ap-logo-white.mdl");
+	setmodel(self, "progs/ap-logo-white.mdl");
+	self.weapon = TRUE;
+	self.netname = "AP Item White";
 	self.touch = ap_touch;
 	setsize(self, '-16 -16 0', '16 16 32');
 	StartItem();
