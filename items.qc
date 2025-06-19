@@ -1368,42 +1368,15 @@ Defined the archipelago pickup model and behaviour
 
 void ()ap_touch =
 {
-	
 	if (other.classname != "player")
 		return;
 	if (other.health <= 0)
 		return;
-	if (self.model == string_null)
-		return;
-	/*
-	entity stemp;
-	stemp = self;
-	self = other;
-	self = stemp;
-	
-	if ((self.weapon == TRUE))
-	{
-		// Give the player 1 shell for their trouble
-		if ((other.ammo_shells >= 100))
-		{
-			other.ammo_shells = 100;
-		}
-		other.ammo_shells = (other.ammo_shells + 1);
-		// And also 1 health
-		T_Heal(other, 1, 0);
-	}
-	
-	bound_other_ammo();
-	
-	stemp = self;
-	self = other;
-	W_SetCurrentAmmo();
-	self = stemp;
-	*/
+
 	stuffcmd(other, "bf\n");
 	// remove it in single player
-	self.model = string_null;
-	self.solid = SOLID_NOT;
+	//self.model = string_null;
+	//self.solid = SOLID_NOT;
 
 	activator = other;
 	SUB_UseTargets(); // fire all targets / killtargets
@@ -1428,7 +1401,7 @@ void() item_ap_prog =
 	precache_model("progs/ap-logo-prog.mdl");
 	setmodel(self, "progs/ap-logo-prog.mdl");
 	self.weapon = TRUE;
-	self.netname = "AP Item Prog";
+	self.netname = "AP Item";
 	self.touch = ap_touch;
 	setsize(self, '-16 -16 0', '16 16 32');
 	StartItem();
@@ -1439,7 +1412,7 @@ void() item_ap_white =
 	precache_model("progs/ap-logo-white.mdl");
 	setmodel(self, "progs/ap-logo-white.mdl");
 	self.weapon = TRUE;
-	self.netname = "AP Item White";
+	self.netname = "AP Item";
 	self.touch = ap_touch;
 	setsize(self, '-16 -16 0', '16 16 32');
 	StartItem();

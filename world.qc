@@ -351,6 +351,10 @@ void() worldspawn =
 
 	// 63 testing
 	lightstyle(63, "a");
+	
+	precache_model("progs/ap-logo-white.mdl");
+	precache_model("progs/ap-logo.mdl");
+	precache_model("progs/ap-logo-prog.mdl");
 };
 
 void() StartFrame =
